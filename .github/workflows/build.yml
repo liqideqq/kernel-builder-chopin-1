@@ -205,34 +205,21 @@ jobs:
             rm -rf "./drivers/kernelsu"
           fi
 
-          curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s main
+          curl -LSs "https://raw.githubusercontent.com/ShirkNeko/KernelSU/susfs/kernel/setup.sh" | bash -s susfs
+
+          cd ./KernelSU
+          cp ./patch/* ./
+          patch --fuzz=3 -p1 < nongki_fix.patch || true
+          chmod 777 nongki_fix.sh
+          ./nongki_fix.sh
 
           echo -e "CONFIG_KPROBES=y" >> arch/${{ env.arch }}/configs/${{ env.DEFCONFIG_NAME }}
           echo -e "CONFIG_HAVE_KPROBES=y" >> arch/${{ env.arch }}/configs/${{ env.DEFCONFIG_NAME }}
           echo -e "CONFIG_KPROBE_EVENTS=y" >> arch/${{ env.arch }}/configs/${{ env.DEFCONFIG_NAME }}
+          echo -e "CONFIG_KSU=y" >> arch/${{ env.arch }}/configs/${{ env.DEFCONFIG_NAME }}
 
           cat arch/${{ env.arch }}/configs/${{ env.DEFCONFIG_NAME }}
-      - name: 开启lxc和docker配置
-        working-directory: ${{ env.KERNEL_NAME }}
-        env:
-          arch: ${{ steps.generate-args.outputs.ARCH }}
-        run: |
-          wget https://github.com/liangsai12/Android-Kernel-Builder-chopin/releases/download/1.0.0/add-lxc-docker-custom.sh
-          chmod 755 add-lxc-docker-custom.sh
-          ./add-lxc-docker-custom.sh arch/${{ env.arch }}/configs/${{ env.DEFCONFIG_NAME }}
-          echo "# CONFIG_ANDROID_PARANOID_NETWORK is not set" >> arch/${{ env.arch }}/configs/${{ env.DEFCONFIG_NAME }}
-
-      - name: 添加runc补丁
-        working-directory: ${{ env.KERNEL_NAME }}
-        run: |
-          wget https://github.com/ShirkNeko/kernel_xiaomi_chopin_android_S/releases/download/1/runcpatch.sh
-          chmod a+x runcpatch.sh
-          if [ -f kernel/cgroup.c ]; then
-          ./runcpatch.sh kernel/cgroup.c               
-          fi
-          if [ -f kernel/cgroup/cgroup.c ]; then
-          ./runcpatch.sh kernel/cgroup/cgroup.c               
-          fi
+  
       - name: "👍 Make defconfig"
         working-directory: ${{ env.KERNEL_NAME }}
         env:
