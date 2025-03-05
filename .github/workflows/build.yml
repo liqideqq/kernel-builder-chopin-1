@@ -208,6 +208,10 @@ jobs:
           curl -LSs "https://raw.githubusercontent.com/ShirkNeko/KernelSU/susfs/kernel/setup.sh" | bash -s susfs_patch
 
           patch -p1 < 50_add_susfs_in_kernel-4.14.patch || true
+          
+          find . -type f \( -name "*.c" -o -name "*.h" \) \
+          -not \( -wholename "./drivers/kernelsu/*" -o -wholename "./kernelsu/*" \) \
+          -exec sed -i 's/atomic_inc_not_zero/atomic64_inc_not_zero/g' {} +
 
           echo -e "CONFIG_KPROBES=y" >> arch/${{ env.arch }}/configs/${{ env.DEFCONFIG_NAME }}
           echo -e "CONFIG_HAVE_KPROBES=y" >> arch/${{ env.arch }}/configs/${{ env.DEFCONFIG_NAME }}
