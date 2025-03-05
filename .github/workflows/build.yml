@@ -240,7 +240,7 @@ jobs:
       - name: Find all relevant files (excluding specific directories)
         run: |
           find . -type f \( -name "*.c" -o -name "*.h" -o -name "*.txt" -o -name "*.rst" -o -name "Makefile" \) \
-            -not \( -wholename "./drivers/kernelsu/*" -o -wholename "./Kernelsu/*" \) \
+            -not \( -wholename "./drivers/kernelsu/*" -o -wholename "./Kernelsu/*" -o -wholename "./proton-clang/*" \) \
             > filelist.txt
 
       - name: Replace atomic_inc_not_zero with atomic64_inc_not_zero
@@ -252,7 +252,7 @@ jobs:
 
       - name: Verify replacements
         run: |
-          grep -rn "atomic_inc_not_zero" . | grep -v "./drivers/kernelsu/" | grep -v "./Kernelsu/"
+          grep -rn "atomic_inc_not_zero" . | grep -v "./drivers/kernelsu/" | grep -v "./Kernelsu/" | grep -v "./proton-clang/"
           if [ $? -eq 0 ]; then
             echo "Replacement failed!"
             exit 1
