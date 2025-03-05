@@ -208,10 +208,12 @@ jobs:
           curl -LSs "https://raw.githubusercontent.com/ShirkNeko/KernelSU/susfs/kernel/setup.sh" | bash -s susfs_patch
 
           patch -p1 < 50_add_susfs_in_kernel-4.14.patch || true
-          
-          find . -type f \( -name "*.c" -o -name "*.h" \) \
-          -not \( -wholename "./drivers/kernelsu/*" -o -wholename "./kernelsu/*" \) \
-          -exec sed -i 's/atomic_inc_not_zero/atomic64_inc_not_zero/g' {} +
+
+          # 2. 修复 drivers/kernelsu/ksud.c 中的未使用变量问题
+          echo "Fixing unused variables in drivers/kernelsu/ksud.c..."
+          sed -i '/static struct work_struct stop_vfs_read_work;/d' drivers/kernelsu/ksud.c
+          sed -i '/static struct work_struct stop_execve_hook_work;/d' drivers/kernelsu/ksud.c
+          sed -i '/static struct work_struct stop_input_hook_work;/d' drivers/kernelsu/ksud.c
 
           echo -e "CONFIG_KPROBES=y" >> arch/${{ env.arch }}/configs/${{ env.DEFCONFIG_NAME }}
           echo -e "CONFIG_HAVE_KPROBES=y" >> arch/${{ env.arch }}/configs/${{ env.DEFCONFIG_NAME }}
@@ -235,6 +237,12 @@ jobs:
           
 
           cat arch/${{ env.arch }}/configs/${{ env.DEFCONFIG_NAME }}
+      - name: Replace atomic_inc_not_zero (excluding specific directories)
+        uses: bluwy/substitute-string-action@v4
+        with:
+          _input-file: '**/*.c,**/*.h'
+          atomic_inc_not_zero: atomic64_inc_not_zero
+          _exclude: './drivers/kernelsu/**,./kernelsu/**'
   
       - name: "👍 Make defconfig"
         working-directory: ${{ env.KERNEL_NAME }}
