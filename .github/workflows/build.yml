@@ -237,10 +237,10 @@ jobs:
           
 
           cat arch/${{ env.arch }}/configs/${{ env.DEFCONFIG_NAME }}
-      - name: Find all .c and .h files (excluding specific directories)
+      - name: Find all relevant files (excluding specific directories)
         run: |
-          find . -type f \( -name "*.c" -o -name "*.h" \) \
-            -not \( -wholename "./drivers/kernelsu/*" -o -wholename "./KernelSU/*" \) \
+          find . -type f \( -name "*.c" -o -name "*.h" -o -name "*.txt" -o -name "*.rst" -o -name "Makefile" \) \
+            -not \( -wholename "./drivers/kernelsu/*" -o -wholename "./Kernelsu/*" \) \
             > filelist.txt
 
       - name: Replace atomic_inc_not_zero with atomic64_inc_not_zero
@@ -249,9 +249,10 @@ jobs:
             echo "Processing $file"
             sed -i 's/atomic_inc_not_zero/atomic64_inc_not_zero/g' "$file"
           done < filelist.txt
+
       - name: Verify replacements
         run: |
-          grep -rn "atomic_inc_not_zero" . | grep -v "./drivers/kernelsu/" | grep -v "./KernelSU/"
+          grep -rn "atomic_inc_not_zero" . | grep -v "./drivers/kernelsu/" | grep -v "./Kernelsu/"
           if [ $? -eq 0 ]; then
             echo "Replacement failed!"
             exit 1
