@@ -2,7 +2,7 @@
   {
     "kernelSource": {
       "name": "shirkneko-KernelSU-docker-release",
-      "repo": "kernel_xiaomi_chopin",
+      "repo": "https://github.com/ShirkNeko/kernel_xiaomi_chopin",
       "branch": "r",
       "device": "chopin",
       "defconfig": "chopin_currentgeek_defconfig"
