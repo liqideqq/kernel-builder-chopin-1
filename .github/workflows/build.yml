@@ -238,11 +238,20 @@ jobs:
 
           cat arch/${{ env.arch }}/configs/${{ env.DEFCONFIG_NAME }}
       - name: Replace atomic_inc_not_zero (excluding specific directories)
-        uses: bluwy/substitute-string-action@v4
+        uses: bluwy/substitute-string-action@v3
         with:
           _input-file: '**/*.c,**/*.h'
           atomic_inc_not_zero: atomic64_inc_not_zero
           _exclude: './drivers/kernelsu/**,./kernelsu/**'
+      - name: Verify replacements
+        run: |
+          grep -rn "atomic_inc_not_zero" . | grep -v "./drivers/kernelsu/" | grep -v "./kernelsu/"
+          if [ $? -eq 0 ]; then
+            echo "Replacement failed!"
+            exit 1
+          else
+            echo "Replacement succeeded!"
+          fi
   
       - name: "👍 Make defconfig"
         working-directory: ${{ env.KERNEL_NAME }}
