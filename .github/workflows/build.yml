@@ -254,7 +254,8 @@ jobs:
         run: |
           grep -rn "atomic_inc_not_zero" . | grep -v "./drivers/kernelsu/" | grep -v "./Kernelsu/" | grep -v "./proton-clang/"
           if [ $? -eq 0 ]; then
-            echo "Replacement failed!"
+            echo "Replacement failed! Remaining occurrences:"
+            grep -rn "atomic_inc_not_zero" . | grep -v "./drivers/kernelsu/" | grep -v "./Kernelsu/" | grep -v "./proton-clang/"
             exit 1
           else
             echo "Replacement succeeded!"
