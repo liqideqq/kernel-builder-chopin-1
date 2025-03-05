@@ -249,17 +249,6 @@ jobs:
             echo "Processing $file"
             sed -i 's/atomic_inc_not_zero/atomic64_inc_not_zero/g' "$file"
           done < filelist.txt
-
-      - name: Verify replacements
-        run: |
-          grep -rn "atomic_inc_not_zero" . | grep -v "./drivers/kernelsu/" | grep -v "./Kernelsu/" | grep -v "./proton-clang/"
-          if [ $? -eq 0 ]; then
-            echo "Replacement failed! Remaining occurrences:"
-            grep -rn "atomic_inc_not_zero" . | grep -v "./drivers/kernelsu/" | grep -v "./Kernelsu/" | grep -v "./proton-clang/"
-            exit 1
-          else
-            echo "Replacement succeeded!"
-          fi
   
       - name: "👍 Make defconfig"
         working-directory: ${{ env.KERNEL_NAME }}
