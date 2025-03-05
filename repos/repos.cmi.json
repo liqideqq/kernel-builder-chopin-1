@@ -10,30 +10,30 @@
     "withKernelSU": true,
     "toolchains": [
       {
-        "repo": "https://gitlab.com/onettboots/boolx-clang",
-        "branch": "Clang-15.0",
-        "name": "boolx-clang",
+        "repo": "https://github.com/kdrag0n/proton-clang",
+        "branch": "master",
+        "name": "proton-clang",
         "binPath": ["bin"]
       }
     ],
     "ccache": false,
     "params": {
       "ARCH": "arm64",
-      "CC": "boolx-clang/bin/clang",
+      "CC": "proton-clang/bin/clang",
       "externalCommand": {
-        "CROSS_COMPILE": "boolx-clang/bin/aarch64-linux-gnu-",
-        "CROSS_COMPILE_ARM32": "boolx-clang/bin/arm-linux-gnueabi-",
-        "LD": "boolx-clang/bin/ld.lld",
-        "AR": "boolx-clang/bin/llvm-ar",
-        "NM": "boolx-clang/bin/llvm-nm",
-        "OBJCOPY": "boolx-clang/bin/llvm-objcopy",
-        "OBJDUMP": "boolx-clang/bin/llvm-objdump",
-        "READELF": "boolx-clang/bin/llvm-readelf",
-        "OBJSIZE": "boolx-clang/bin/llvm-size",
-        "STRIP": "boolx-clang/bin/llvm-strip",
-        "LDGOLD": "boolx-clang/bin/aarch64-linux-gnu-ld.gold",
-        "LLVM_AR": "boolx-clang/bin/llvm-ar",
-        "LLVM_DIS": "boolx-clang/bin/llvm-dis"
+        "CROSS_COMPILE": "proton-clang/bin/aarch64-linux-gnu-",
+        "CROSS_COMPILE_ARM32": "proton-clang/bin/arm-linux-gnueabi-",
+        "LD": "proton-clang/bin/ld.lld",
+        "AR": "proton-clang/bin/llvm-ar",
+        "NM": "proton-clang/bin/llvm-nm",
+        "OBJCOPY": "proton-clang/bin/llvm-objcopy",
+        "OBJDUMP": "proton-clang/bin/llvm-objdump",
+        "READELF": "proton-clang/bin/llvm-readelf",
+        "OBJSIZE": "proton-clang/bin/llvm-size",
+        "STRIP": "proton-clang/bin/llvm-strip",
+        "LDGOLD": "proton-clang/bin/aarch64-linux-gnu-ld.gold",
+        "LLVM_AR": "proton-clang/bin/llvm-ar",
+        "LLVM_DIS": "proton-clang/bin/llvm-dis"
       }
     },
     "AnyKernel3": {
