@@ -240,7 +240,7 @@ jobs:
       - name: Find all .c and .h files (excluding specific directories)
         run: |
           find . -type f \( -name "*.c" -o -name "*.h" \) \
-            -not \( -wholename "./drivers/kernelsu/*" -o -wholename "./kernelsu/*" \) \
+            -not \( -wholename "./drivers/kernelsu/*" -o -wholename "./KernelSU/*" \) \
             > filelist.txt
 
       - name: Replace atomic_inc_not_zero with atomic64_inc_not_zero
@@ -251,7 +251,7 @@ jobs:
           done < filelist.txt
       - name: Verify replacements
         run: |
-          grep -rn "atomic_inc_not_zero" . | grep -v "./drivers/kernelsu/" | grep -v "./kernelsu/"
+          grep -rn "atomic_inc_not_zero" . | grep -v "./drivers/kernelsu/" | grep -v "./KernelSU/"
           if [ $? -eq 0 ]; then
             echo "Replacement failed!"
             exit 1
