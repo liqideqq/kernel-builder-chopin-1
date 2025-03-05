@@ -2,10 +2,10 @@
   {
     "kernelSource": {
       "name": "shirkneko-KernelSU-docker-release",
-      "repo": "https://github.com/ShirkNeko/kernel_xiaomi_chopin",
-      "branch": "r",
-      "device": "chopin",
-      "defconfig": "chopin_currentgeek_defconfig"
+      "repo": "https://github.com/ShirkNeko/kernel_xiaomi_raphael_bool-x",
+      "branch": "main",
+      "device": "raphael",
+      "defconfig": "raphael_defconfig"
     },
     "withKernelSU": true,
     "toolchains": [
@@ -39,8 +39,8 @@
     "AnyKernel3": {
       "use": true,
       "release": true,
-      "repo": "https://github.com/osm0sis/AnyKernel3",
-      "branch": "master"
+      "repo": "https://github.com/onettboots/boolx_anykernel",
+      "branch": "unroot"
     }
   }
 ]
